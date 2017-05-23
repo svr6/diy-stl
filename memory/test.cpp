@@ -13,13 +13,15 @@ void new_free(int count)
 	{
 		memset(a,1,count);
 		printf("before %p\n",a);
-		free(a);
+		//free(a);
+		delete a;
 		printf("after %p\n",a);
 	}
 
 }
 
-int main()
+
+void test1()
 {
 #define MAX 100
 	int i = 0;
@@ -27,4 +29,9 @@ int main()
 	{
 		new_free(i);
 	}
+}
+
+int main()
+{
+	test1();
 }
