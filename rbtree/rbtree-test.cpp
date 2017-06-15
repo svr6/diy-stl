@@ -1,12 +1,3 @@
-
-
-/**
- * C++ 语言: 二叉查找树
- *
- * @author skywang
- * @date 2013/11/07
- */
-
 #include <iostream>
 #include "rbtree.h"
 using namespace std;
