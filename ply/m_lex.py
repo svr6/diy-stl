@@ -7,7 +7,7 @@ import sys
 from ply import lex as lex
 
 
-class MyLexer:
+class MyLexer(object):
     tokens = (
                 'NUMBER',
                 'PLUS',
