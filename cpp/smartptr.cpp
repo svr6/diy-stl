@@ -28,6 +28,42 @@ class Simple
 };
 
 
+void TestWeakPtr()
+{
+	boost::weak_ptr<Simple> memory_weak;
+	boost::shared_ptr<Simple> memory(new Simple(134));
+	
+	{
+		std::cout << "TestWeakPtr UseCount: " << memory.use_count() << std::endl;
+		memory_weak = memory;
+		std::cout << "TestWeakPtr UseCount: " << memory.use_count() << std::endl;
+	}
+}
+
+void TestSharedArray2(boost::shared_array<Simple> memory) 
+{ 
+	std::cout << "TestSharedArray2 UseCount: " << memory.use_count() << std::endl;
+}
+
+void TestSharedArray() 
+{
+	boost::shared_array<Simple> memory(new Simple[2]);
+	if (memory.get()) 
+	{
+		memory[0].PrintInfo();
+		memory.get()[0].info = "Addition 00";
+		memory[0].PrintInfo();
+		memory[1].PrintInfo();
+		memory.get()[1].info = "Addition 11";
+		memory[1].PrintInfo();
+		//(*memory)[0].info += " other"; 
+	}
+	std::cout << "TestSharedArray UseCount: " << memory.use_count() << std::endl;
+	TestSharedArray2(memory);
+	std::cout << "TestSharedArray UseCount: " << memory.use_count() << std::endl;
+}
+
+
 void TestSharedPtr2(boost::shared_ptr<Simple> memory)
 {
 	memory->PrintInfo();
@@ -45,13 +81,33 @@ void TestSharedPtr()
 		(*memory).info += " Test Scoped";
 		memory->PrintInfo();
 	}
- 
+
 	std::cout << "Shared Ptr use count: " << memory.use_count() << std::endl;
 	TestSharedPtr2(memory);
 	std::cout << "Shared Ptr use count: " << memory.use_count() << std::endl;
 }
 
 
+void TestScopedArray()
+{
+	boost::scoped_array<Simple> memory(new Simple(2345));
+	if(memory.get())
+	{
+		memory[0].PrintInfo();
+		memory.get()[0].info = "Add";
+		memory[0].PrintInfo();
+		//(*memory)[0].info += " Test Scoped"; //not support
+		memory.get()[0].info = "Test Scoped Array";
+		memory[0].PrintInfo();
+
+		//unavailable
+		{
+			//memory[0].release();
+			//boost::scoped_array<Simple> memory2;
+			//memory2 = memory;
+		}
+	}
+}
 
 void TestScopedPtr()
 {
@@ -80,11 +136,11 @@ void TestAutoPtr3()
 	if(memory.get())
 	{
 		/*
-		{
-			Simple * tmp_ptr = memory.release();
-			delete tmp_ptr;
-		}
-		*/
+		   {
+		   Simple * tmp_ptr = memory.release();
+		   delete tmp_ptr;
+		   }
+		   */
 
 		{
 			memory.reset();
@@ -125,7 +181,10 @@ int main()
 	//TestAutoPtr2();
 	//TestAutoPtr3();
 	//TestScopedPtr();
-	TestSharedPtr();
+	//TestSharedPtr();
+	//TestScopedArray();
+	//TestSharedArray();
+	TestWeakPtr();
 
 	return 0;
 }
