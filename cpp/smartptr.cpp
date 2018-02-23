@@ -28,6 +28,12 @@ class Simple
 };
 
 
+void TestIntrusivePtr()
+{
+	//add ref count self. wait to implement...
+	//
+}
+
 void TestWeakPtr()
 {
 	boost::weak_ptr<Simple> memory_weak;
